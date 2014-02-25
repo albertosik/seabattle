@@ -1,0 +1,92 @@
+body{
+    background-image: url('../img/bg.jpg');
+    background-size: 100%;
+}
+.inner{
+    height: 27px;
+    width: 27px;
+    box-shadow:3px 3px 1px 0px rgba(50, 50, 50, 0.75);
+    border-radius: 3px;
+}
+.outer{
+        border-radius: 5px
+}
+
+#sidebar{
+    width: 250px;
+    display: inline-block;
+    float: left;
+}
+
+#game{
+    display: inline-block;
+    margin: 10px;
+}
+
+#auth{
+    margin: 0 auto;
+    width: 150px;
+    background-color: rgba(200, 240, 255, 0.5);
+    border-radius: 15px;
+    padding: 40px
+}
+
+.status{
+    width: 200px;
+    margin: 5px;
+    padding: 5px;
+    background-color: rgba(200, 240, 255, 0.8);
+    color: #660000;
+    text-align: center; 
+}
+#name{
+    font-size: 2em;
+}
+#server{
+    font-size: 1.1em;
+}
+#win{
+    display: none;
+    font-size: 1.2em;
+}
+
+.error{
+    border-radius: 5px;
+    background-color: #ff9999;
+    color: #660000;
+    margin: 15px;
+    padding: 15px;
+    font-size: 24px;
+}
+a{
+    color: #0000cc;
+    font-family: tahoma;
+}
+.ok{
+    border-radius: 5px;
+    background-color: #99ff99;
+    color: #006600;
+    margin: 15px;
+    padding: 15px;
+    font-size: 24px;
+}
+td{
+    width: 35px;
+    height: 35px;
+    background-color: rgba(0,150,255,0.9);
+    color: #f00;
+    text-align: center;
+}
+
+#field_b td{
+    background-color: rgba(0,150,255,0.9);
+}
+#field_b td:hover{
+    background-color: rgba(200,100,50,0.9);
+    cursor: pointer;
+}
+
+.field{
+    display: inline-block;
+    margin: 50px;
+}
