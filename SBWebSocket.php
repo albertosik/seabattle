@@ -72,23 +72,29 @@ class SBWebSocketRoute extends \PHPDaemon\WebSocket\Route {
 			$sess = explode('_',$data);
 			$this->appInstance->sessions[$sess[1]]->idrival = $this->id;
 			$this->idrival = $sess[1];
-			$this->client->sendFrame('r_'.$this->appInstance->sessions[$sess[1]]->iduser.'', 'STRING');
-			$this->client->sendFrame('s2id_'.$this->id, 'STRING');
-			$this->appInstance->sessions[$sess[1]]->client->sendFrame('r_'.$this->iduser.'', 'STRING');
+			$this->client->sendFrame('{"rivalId":"'.$this->appInstance->sessions[$sess[1]]->iduser.'"}', 'STRING');
+			$this->client->sendFrame('{"sess2id":"'.$this->id.'"}', 'STRING');
+			$this->appInstance->sessions[$sess[1]]->client->sendFrame('{"rivalId":"'.$this->iduser.'"}', 'STRING');
 		}
 		else if($data[0] == 'b')
 		{
-			$this->appInstance->sessions[$this->idrival]->client->sendFrame($data, 'STRING');
+			$this->appInstance->sessions[$this->idrival]->client->sendFrame('{"cell":"'.$data.'"}', 'STRING');
 		}
 		else if($data == 'new')
 		{
-			$this->client->sendFrame('myid_'.$this->id, 'STRING');
+                        $arr = array('myid'=>$this->id);
+			$this->client->sendFrame(json_encode($arr), 'STRING');
 		}
 		else if($data[0] == 'i')
 		{
 			$id = explode('_',$data);
 			$this->iduser = $id[1];
 		}
+                else if($data[0] == 'h')
+                {
+                    $this->appInstance->sessions[$this->idrival]->client->sendFrame('{"hit":"'.$data.'"}', 'STRING');
+                }
+
     }
 
     // Этот метод срабатывает при закрытии соединения клиентом

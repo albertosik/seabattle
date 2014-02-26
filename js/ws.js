@@ -1,8 +1,8 @@
  var wsUri = "ws://192.168.3.194:8047/sbws"; 
  websocket = new WebSocket(wsUri); 
- websocket.onclose = function(evt){onClose(evt)}; 
- websocket.onmessage = function(evt) { onMessage(evt) }; 
- websocket.onerror = function(evt) { onError(evt) }; 
+ websocket.onclose = function(evt){onClose(evt);}; 
+ websocket.onmessage = function(evt) { onMessage(evt); }; 
+ websocket.onerror = function(evt) { onError(evt); }; 
  
  function onOpen(evt, msg) 
  { 
@@ -14,45 +14,54 @@
      writeToScreen("DISCONNECTED"); 
  }  
  function onMessage(evt) 
- {     
-     if(evt.data.charAt(0)==='b')
+ {    
+     var command = JSON.parse(evt.data);
+     console.log(command);
+     if(command.cell)
      {
-         var pos = evt.data.split('_');
+         var pos = command.cell.split('_');
          x = pos[1];
          y = pos[2];
-         $('#a'+x+y).append('&#10008;');
-         console.log('#a'+x+y);
+         
+         if(hit(x,y))
+         {
+             doSend('hitok_'+x+'_'+y);
+             $('#a'+x+y).append('&#10008;');
+         }
+         else
+         {
+             doSend('hitfalse_'+x+'_'+y);
+             $('#a'+x+y).css('background-color', 'rgba(0,150,155,0.9)'); 
+         }
      }
-     else if(evt.data === 'you winer')
-     {
-         $.post('ajax.php',{cmd:'win'});
-         $('#win').css('display', 'block').append('Победа!!!');
+     else if(command.hit)
+     { 
+         var pos = command.hit.split('_');
+         x = pos[1];
+         y = pos[2];
+         if(command.hit.charAt(3) === 'o')
+         {    
+            $('#b_'+x+'_'+y).append('&#10008;');
+            $('#b_'+x+'_'+y).css('background-color', '#0000ff');
+         }
+         else
+            $('#b_'+x+'_'+y).css('background-color', 'rgba(0,150,155,0.9)'); 
      }
-     else if(evt.data === 'you lose')
+     else if(command.rivalId)
      {
-         $.post('ajax.php',{cmd:'win'});
-         $('#win').css('display', 'block').append('Поражение');
-     }
-     else if(evt.data.charAt(0) === 'r')
-     {
-         var id = evt.data.split('_');
-         $.post('ajax.php',{cmd:'getName',id:id[1]}, function(data){
+         $.post('ajax.php',{cmd:'getName',id:command.rivalId}, function(data){
              $('#server').append('<p>Ваш противник: '+data+'</p>');
          });
      }
-     else if(evt.data.charAt(0) === 'm')
+     else if(command.myid)
      {
-         var id = evt.data.split('_');
-         $.post('ajax.php',{cmd:'newGame',id:id[1],layout:game}, function(data){
+         $.post('ajax.php',{cmd:'newGame',id:command.myid}, function(data){
              $('#server').append('<p>Ожидается подключение проивника</p>');
          });
      }
-     else if(evt.data.charAt(0) === 's')
+     else if(command.sess2id)
      {
-         var id = evt.data.split('_');
-         $.post('ajax.php', {cmd:'getLayout',id:id[1],session_1:rivalsession}, function(data){
-         drawFromLayout(JSON.parse(data));
-    });
+         $.post('ajax.php', {cmd:'connect',id:command.sess2id,session_1:rivalsession});
      }
      else
     {

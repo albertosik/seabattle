@@ -9,12 +9,11 @@ if($_POST['cmd']=='newGame')
     $_SESSION['gameid'] = $db->INSERT('INSERT INTO `game` SET `id_gamer_1`=\''.$_SESSION['userid'].'\', `id_gamer_2`=\'-1\', `layout`=\''.$_POST['layout'].'\', `session_1`=\''.$_POST['id'].'\'');
     $db->close();
 }
-else if($_POST['cmd']=='getLayout')
+else if($_POST['cmd']=='connect')
 {
     $db = new classDb($_SESSION['host'], USER, PASSWORD, $_SESSION['db']);
-    $layout = $db->SELECT('SELECT `id`,`layout` FROM `game` WHERE `session_1`=\''.$_POST['session_1'].'\'');
-    echo $layout[0]['layout'];
-    $_SESSION['gameid'] = $layout[0]['id'];
+    $game = $db->SELECT('SELECT `id` FROM `game` WHERE `session_1`=\''.$_POST['session_1'].'\'');
+    $_SESSION['gameid'] = $game[0]['id'];
     $db->UPDATE('UPDATE `game` SET `id_gamer_2`=\''.$_SESSION['userid'].'\', `session_2`=\''.$_POST['id'].'\' WHERE `session_1`=\''.$_POST['session_1'].'\'');
     $db->close();
 }

@@ -60,8 +60,9 @@ ship.prototype=shipTpl;
 
 
 $(function(){
-    $('.cell').click(function(){
+    $('body').on('click','.cell',function(){
         doSend($(this).attr('id'));
+        $(this).attr('class','');
     });
 });
 
@@ -91,4 +92,16 @@ function createLayout()
     ships.push(new ship(rand(8,9),rand(8,9),line[0],1));
 
     
+}
+
+function hit(x,y)
+{
+    if(field[x][y]==1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
