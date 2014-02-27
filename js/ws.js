@@ -32,6 +32,9 @@
          {
              doSend('hitfalse_'+x+'_'+y);
              $('#a'+x+y).css('background-color', 'rgba(0,150,155,0.9)'); 
+             $('#field_b').attr('class','field');
+             $('#field_b').animate({opacity:1});
+             $('#win').empty().append('<p>Ваш ход</p>');
          }
      }
      else if(command.hit)
@@ -45,10 +48,21 @@
             $('#b_'+x+'_'+y).css('background-color', '#0000ff');
          }
          else
+         {
             $('#b_'+x+'_'+y).css('background-color', 'rgba(0,150,155,0.9)'); 
+            wait();
+         }
      }
      else if(command.rivalId)
      {
+         if(command.stroke === 'false')
+         {
+             wait();
+         }
+         else
+         {
+             $('#win').empty().append('<p>Ваш ход</p>');
+         }
          $.post('ajax.php',{cmd:'getName',id:command.rivalId}, function(data){
              $('#server').append('<p>Ваш противник: '+data+'</p>');
          });
@@ -62,6 +76,13 @@
      else if(command.sess2id)
      {
          $.post('ajax.php', {cmd:'connect',id:command.sess2id,session_1:rivalsession});
+     }
+     else if(command.win)
+     {
+         $('#win').empty().append('<p>Победа!!!</p>');
+         $('#field_b').attr('class','block');
+         $('#field_b').animate({opacity:0.6});
+         $.post('ajax.php', {cmd:'win'});
      }
      else
     {

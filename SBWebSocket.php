@@ -72,9 +72,9 @@ class SBWebSocketRoute extends \PHPDaemon\WebSocket\Route {
 			$sess = explode('_',$data);
 			$this->appInstance->sessions[$sess[1]]->idrival = $this->id;
 			$this->idrival = $sess[1];
-			$this->client->sendFrame('{"rivalId":"'.$this->appInstance->sessions[$sess[1]]->iduser.'"}', 'STRING');
+			$this->client->sendFrame('{"rivalId":"'.$this->appInstance->sessions[$sess[1]]->iduser.'", "stroke":"true"}', 'STRING');
 			$this->client->sendFrame('{"sess2id":"'.$this->id.'"}', 'STRING');
-			$this->appInstance->sessions[$sess[1]]->client->sendFrame('{"rivalId":"'.$this->iduser.'"}', 'STRING');
+			$this->appInstance->sessions[$sess[1]]->client->sendFrame('{"rivalId":"'.$this->iduser.'", "stroke":"false"}', 'STRING');
 		}
 		else if($data[0] == 'b')
 		{
@@ -93,6 +93,10 @@ class SBWebSocketRoute extends \PHPDaemon\WebSocket\Route {
                 else if($data[0] == 'h')
                 {
                     $this->appInstance->sessions[$this->idrival]->client->sendFrame('{"hit":"'.$data.'"}', 'STRING');
+                }
+                else if($data == 'finish')
+                {
+                    $this->appInstance->sessions[$this->idrival]->client->sendFrame('{"win":"'.$data.'"}', 'STRING');
                 }
 
     }

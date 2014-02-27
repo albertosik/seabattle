@@ -60,7 +60,7 @@ ship.prototype=shipTpl;
 
 
 $(function(){
-    $('body').on('click','.cell',function(){
+    $('body').on('click','.field .cell',function(){
         doSend($(this).attr('id'));
         $(this).attr('class','');
     });
@@ -89,19 +89,44 @@ function createLayout()
     ships.push(new ship(0,rand(0,1),line[0],1));
     ships.push(new ship(rand(8,9),rand(0,1),line[0],1));
     ships.push(new ship(rand(0,1),rand(8,9),line[0],1));
-    ships.push(new ship(rand(8,9),rand(8,9),line[0],1));
-
-    
+    ships.push(new ship(rand(8,9),rand(8,9),line[0],1)); 
 }
+
 
 function hit(x,y)
 {
     if(field[x][y]==1)
     {
+        field[x][y] = 0;
+        if(finish())
+        {
+            doSend('finish');
+            $('#win').empty().append('<p>Поражение</p>');
+        }
         return true;
     }
     else
     {
         return false;
     }
+}
+
+function wait()
+{
+    $('#field_b').attr('class','block');
+    $('#field_b').animate({opacity:0.6});
+    $('#win').empty().append('<p>Ожидание хода противника</p>');
+}
+
+function finish()
+{
+    for(var i=0; i<10; i++)
+    {
+        for(var j=0; j<10; j++)
+        {
+            if(field[i][j] === 1)
+                return false;
+        }
+    }
+    return true;
 }
