@@ -1,6 +1,8 @@
 <?php
 function auth($login,$pass,$db)
 {
+    $login = mysql_real_escape_string($login);
+    $pass = mysql_real_escape_string($pass);
     $auth = $db->SELECT('SELECT `u`.`id`,`name`, `host`, `db`, `wsserver` FROM `user` `u`, `shard` WHERE `shard`.`id`=`u`.`id_shard` AND `login`=\''.$login.'\' AND `password`=\''.$pass.'\'');
     if(sizeof($auth)==0)
     {
@@ -31,6 +33,8 @@ function newGameCheck($db)
 
 function registration($name,$login,$password,$db)
 {
+    $name = mysql_real_escape_string($name);
+    $login = mysql_real_escape_string($login);
     $shard = $db->SELECT('SELECT `id` FROM `shard` WHERE `size` = (SELECT MIN(`size`) FROM `shard`)');
     if(checkLogin($login,$db))
     {
@@ -45,6 +49,7 @@ function registration($name,$login,$password,$db)
 }
 function checkLogin($login,$db)
 {
+    $login = mysql_real_escape_string($login);
     $check = $db->SELECT('SELECT * FROM `user` WHERE `login`=\''.$login.'\'');
     if(sizeof($check)==0)
     {
