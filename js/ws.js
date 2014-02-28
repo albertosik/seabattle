@@ -1,4 +1,4 @@
- var wsUri = "ws://192.168.3.194:8047/sbws"; 
+ var wsUri = "ws://"+wsserver+":8047/sbws"; 
  websocket = new WebSocket(wsUri); 
  websocket.onclose = function(evt){onClose(evt);}; 
  websocket.onmessage = function(evt) { onMessage(evt); }; 
