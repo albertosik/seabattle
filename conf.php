@@ -1,6 +1,6 @@
 <?php
-define('HOST', '5.175.194.139');
+define('HOST', 'localhost');
 define('DB', 'seabattle');
-define('USER', 'silver');
-define('PASSWORD', 'lugansk');
+define('USER', 'root');
+define('PASSWORD', 'lugansk2012');
 ?>
